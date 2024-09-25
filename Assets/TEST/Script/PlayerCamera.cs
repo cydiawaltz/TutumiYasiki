@@ -16,8 +16,8 @@ public class PlayerCamera : MonoBehaviour
     void Start()
     {
     //マウスポインターを真ん中に固定し見えなくする
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
 
     // Update is called once per frame
