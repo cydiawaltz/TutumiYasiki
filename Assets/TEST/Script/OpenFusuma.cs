@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpenFusuma : MonoBehaviour
+public class OpenFusuma : MonoBehaviour//廃止
 {
     [SerializeField] Animator anim;
     [SerializeField] GameObject player;
@@ -31,5 +31,6 @@ public class OpenFusuma : MonoBehaviour
             isClose = true;
             isOpen = false;
         }
+        
     }
 }
