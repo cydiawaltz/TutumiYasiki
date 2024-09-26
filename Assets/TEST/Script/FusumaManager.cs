@@ -17,7 +17,7 @@ public class FusumaManager : MonoBehaviour//襖にアタッチ
 
     private void Update()
     {
-        distance = Vector3.Distance(player.transform.position, this.transform.position);
+        distance = Vector3.Distance(player.transform.position, initial);
         if(distance > targetDistance && isOpen)
         {
             anim.SetBool("isOpen", false);
@@ -26,19 +26,19 @@ public class FusumaManager : MonoBehaviour//襖にアタッチ
         }
         if (distance < targetDistance && !isOpen)
         {
-            this.transform.position = new Vector3(initial.x + 0.9f, initial.y, initial.z);
+            //this.transform.position = new Vector3(initial.x + 0.9f, initial.y, initial.z);
             anim.SetBool("isClose", false);
             anim.SetBool("isOpen", true);
             isOpen = !isOpen;
         }
     }
-    void OnOpenEnd()
+    /*void OnOpenEnd()
     {
         this.transform.position = new Vector3(initial.x + 0.9f, initial.y, initial.z);
     }
     void OnCloseEnd()
     {
         this.transform.position = initial;
-    }
+    }*/
 }
 
