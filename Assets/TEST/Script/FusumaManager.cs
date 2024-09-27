@@ -2,22 +2,32 @@
 
 public class FusumaManager : MonoBehaviour//襖にアタッチ
 {
-    public float distance;
+    public double distance;
     [SerializeField] GameObject player;
-    [SerializeField] Vector3 initial;
+    [SerializeField] float initialX;
+    [SerializeField] float initialZ;
     [SerializeField] float targetDistance;//襖が開く距離
     [SerializeField] bool isOpen;//trueなら襖が開いた状態、falseなら閉じた状態
     [SerializeField] Animator anim;
+    [SerializeField] ShaffleRoom shaffleRoom;
 
     private void Start()
     {
         anim = gameObject.GetComponent<Animator>();
-        initial = gameObject.transform.position;
+        initialX = gameObject.transform.position.x;
+        initialZ = gameObject.transform.position.z;
+        //targetDistance = 2.6f;
     }
 
     private void Update()
     {
-        distance = Vector3.Distance(player.transform.position, initial);
+        if (shaffleRoom.isShuffle)
+        {
+            initialX = gameObject.transform.position.x;
+            initialZ = gameObject.transform.position.z;
+        }
+        //distance = Vector3.Distance(player.transform.position, initial);
+        distance = Mathf.Sqrt(Mathf.Pow(player.transform.position.x - initialX, 2) + Mathf.Pow(player.transform.position.z - initialZ, 2));
         if(distance > targetDistance && isOpen)
         {
             anim.SetBool("isOpen", false);
