@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Fusuma
+  - SubCamera
+  - Tatami
   layers:
   - Default
   - TransparentFX

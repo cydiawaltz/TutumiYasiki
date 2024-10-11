@@ -1,54 +1,50 @@
 ﻿using UnityEngine;
+using System.Threading.Tasks;
+using System.Collections;
 
 public class FusumaManager : MonoBehaviour//襖にアタッチ
 {
     public double distance;
     [SerializeField] GameObject player;
-    [SerializeField] float initialX;
-    [SerializeField] float initialZ;
+    [SerializeField] Vector3 initial;
+    [SerializeField] Vector3 current;
     [SerializeField] float targetDistance;//襖が開く距離
     [SerializeField] bool isOpen;//trueなら襖が開いた状態、falseなら閉じた状態
     [SerializeField] Animator anim;
     [SerializeField] ShaffleRoom shaffleRoom;
+    [SerializeField] bool isOperating;//襖の開閉操作中か
 
     private void Start()
     {
+        initial = gameObject.transform.localPosition;
         anim = gameObject.GetComponent<Animator>();
-        initialX = gameObject.transform.position.x;
-        initialZ = gameObject.transform.position.z;
-        //targetDistance = 2.6f;
+        targetDistance = 1.5f;
     }
 
     private void Update()
     {
-        if (shaffleRoom.isShuffle)
+        //current = transform.TransformPoint(initial);
+        current = gameObject.transform.position;
+        distance = Mathf.Sqrt(Mathf.Pow(player.transform.position.x - current.x, 2) + Mathf.Pow(player.transform.position.z - current.z, 2));
+        if(distance > targetDistance && isOpen&&!isOperating)
         {
-            initialX = gameObject.transform.position.x;
-            initialZ = gameObject.transform.position.z;
-        }
-        //distance = Vector3.Distance(player.transform.position, initial);
-        distance = Mathf.Sqrt(Mathf.Pow(player.transform.position.x - initialX, 2) + Mathf.Pow(player.transform.position.z - initialZ, 2));
-        if(distance > targetDistance && isOpen)
-        {
+            isOperating = true;
             anim.SetBool("isOpen", false);
             anim.SetBool("isClose", true);
             isOpen = !isOpen;
         }
-        if (distance < targetDistance && !isOpen)
+        if (distance < targetDistance && !isOpen&&!isOperating)
         {
-            //this.transform.position = new Vector3(initial.x + 0.9f, initial.y, initial.z);
+            isOperating = true;
             anim.SetBool("isClose", false);
             anim.SetBool("isOpen", true);
             isOpen = !isOpen;
         }
     }
-    /*void OnOpenEnd()
+    public void OnAnimationEnd()
     {
-        this.transform.position = new Vector3(initial.x + 0.9f, initial.y, initial.z);
+        isOperating = false;
     }
-    void OnCloseEnd()
-    {
-        this.transform.position = initial;
-    }*/
+    
 }
 

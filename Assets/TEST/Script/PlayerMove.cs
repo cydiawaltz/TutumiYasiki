@@ -7,74 +7,62 @@ public class PlayerMove : MonoBehaviour
     public float moveSpeed;
     public float groundDrag;
 
-    public float playerheight;
+    public float playerHeight;
     public LayerMask Ground;
     bool grounded;
 
     public Transform orientation;
 
-    float HorizontalInput;
-    float VerticalInput;
+    float horizontalInput;
+    float verticalInput;
 
     Vector3 moveDirection;
+    Vector3 velocity;
 
-    Rigidbody rb;
+    CharacterController controller;
 
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        // CharacterControllerの参照を取得
+        controller = GetComponent<CharacterController>();
     }
 
-   
     void Update()
     {
-        //地面と接しているかを判断
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerheight * 0.5f + 0.2f, Ground);
+        // 地面と接しているかを判断
+        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, Ground);
 
-        //接している場合は、設定した減速値を代入しプレイヤーを滑りにくくする
-        if (grounded)
-            rb.drag = groundDrag;
-        else
-            rb.drag = 0;
+        if (grounded && velocity.y < 0)
+        {
+            velocity.y = -2f;  // プレイヤーを地面に固定するための処理
+        }
 
         ProcessInput();
-        SpeedControl();
+        MovePlayer();
     }
-
-
-    private void FixedUpdate()
-    {
-        movePlayer();
-    }
-
 
     private void ProcessInput()
     {
-        //入力を取得
-        HorizontalInput = Input.GetAxisRaw("Horizontal");
-        VerticalInput = Input.GetAxisRaw("Vertical");
+        // 入力を取得
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
     }
 
-
-    private void movePlayer()
+    private void MovePlayer()
     {
-        //向いている方向に進む
-        moveDirection = orientation.forward * VerticalInput + orientation.right * HorizontalInput;
-        rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-    }
-
-
-    private void SpeedControl()
-    {
-        //プレイヤーのスピードを制限
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-
-        if (flatVel.magnitude > moveSpeed)
+        // 向いている方向に進む
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        if (this.gameObject.GetComponent<CharacterController>().enabled)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            controller.Move(moveDirection.normalized * moveSpeed * Time.deltaTime);
+        }
+
+        // 重力を適用
+        velocity.y += Physics.gravity.y * Time.deltaTime;
+        if(this.gameObject.GetComponent<CharacterController>().enabled)
+        {
+            controller.Move(velocity * Time.deltaTime);
         }
     }
 }
