@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 public class RoomManager : MonoBehaviour
 {
@@ -12,9 +11,7 @@ public class RoomManager : MonoBehaviour
     [SerializeField] bool isShuffle = false;
     [SerializeField] int currentRoomIndex;//今いる部屋
     [SerializeField] int nearRoomIndex;//現在最も近い部屋
-
-    // シャッフル前の最も近い部屋のインデックス
-    private int preShuffleNearRoomIndex;
+    [SerializeField] float targetDistance;
 
     void Start()
     {
@@ -30,21 +27,12 @@ public class RoomManager : MonoBehaviour
 
     void Update()
     {
-        // 各部屋の中心からプレイヤーまでの距離を計算
-        for (int i = 0; i < defaultRooms.Length; i++)
-        {
-            distance[i] = Mathf.Sqrt(Mathf.Pow(player.transform.position.x - center[i].x, 2) + Mathf.Pow(player.transform.position.z - center[i].z, 2));
-        }
-        // 最も近い部屋のインデックスを取得
-        nearRoomIndex = distance.ToList().IndexOf(distance.Min());
-
+        CalDistance();
         if (isShuffle)
         {
+            player.transform.SetParent(defaultRooms[nearRoomIndex].transform.GetChild(0).transform);
+            cameraObj.transform.SetParent(defaultRooms[nearRoomIndex].transform.GetChild(0).transform);
             player.GetComponent<CharacterController>().enabled = false;
-            // シャッフル前の最も近い部屋のインデックスを記録
-            preShuffleNearRoomIndex = nearRoomIndex;
-            // プレイヤーのローカル座標を保存
-            Vector3 localPosition = player.transform.InverseTransformPoint(transform.position);
             // 現在の部屋の位置を保存
             Vector3[] a = new Vector3[currentRooms.Length];
             for (int i = 0; i < currentRooms.Length; i++)
@@ -57,13 +45,10 @@ public class RoomManager : MonoBehaviour
             for (int i = 0; i < currentRooms.Length; i++)
             {
                 currentRooms[i].transform.position = a[i];
+                //currentRooms[i].transform.position = defaultRooms[i].transform.position;
             }
-            // プレイヤーをシャッフル前に最も近かった部屋に追従させる
-            player.transform.position = defaultRooms[preShuffleNearRoomIndex].transform.GetChild(0).transform.position;
-            // プレイヤーの位置を復元
-            transform.localPosition = localPosition;
-            // プレイヤーを再び動けるようにする
             player.GetComponent<CharacterController>().enabled = true;
+            CalDistance();
             currentRoomIndex = nearRoomIndex;
             isShuffle = false;
         }
@@ -74,12 +59,23 @@ public class RoomManager : MonoBehaviour
         }
         if (!(currentRoomIndex == nearRoomIndex))
         {
-            player.transform.SetParent(defaultRooms[nearRoomIndex].transform.GetChild(0).transform);
-            cameraObj.transform.SetParent(defaultRooms[nearRoomIndex].transform.GetChild(0).transform);
             isShuffle = true;
         }
     }
-
+    void CalDistance()
+    {
+        // 各部屋の中心からプレイヤーまでの距離を計算
+        for (int i = 0; i < defaultRooms.Length; i++)
+        {
+            distance[i] = Mathf.Sqrt(Mathf.Pow(player.transform.position.x - defaultRooms[i].transform.GetChild(0).transform.position.x, 2) + Mathf.Pow(player.transform.position.z - defaultRooms[i].transform.GetChild(0).transform.position.z, 2));
+            if (distance[i]<targetDistance)
+            {
+                nearRoomIndex = i;
+            }
+        }
+        // 最も近い部屋のインデックスを取得
+        //nearRoomIndex = distance.ToList().IndexOf(distance.Min());
+    }
     // 部屋をシャッフルするメソッド
     void Shuffle()
     {

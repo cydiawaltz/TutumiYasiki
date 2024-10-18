@@ -21,6 +21,7 @@ public class PlayerMove : MonoBehaviour
 
     CharacterController controller;
 
+    public bool isRouka = false;
 
     void Start()
     {
@@ -63,6 +64,18 @@ public class PlayerMove : MonoBehaviour
         if(this.gameObject.GetComponent<CharacterController>().enabled)
         {
             controller.Move(velocity * Time.deltaTime);
+        }
+    }
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        string hitTag = hit.gameObject.tag;
+        if(hitTag == "Rouka")
+        {
+            isRouka = true;
+        }
+        else
+        {
+            isRouka = false;
         }
     }
 }

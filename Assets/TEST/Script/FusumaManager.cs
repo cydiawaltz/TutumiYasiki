@@ -1,22 +1,17 @@
 ﻿using UnityEngine;
-using System.Threading.Tasks;
-using System.Collections;
 
 public class FusumaManager : MonoBehaviour//襖にアタッチ
 {
     public double distance;
     [SerializeField] GameObject player;
-    [SerializeField] Vector3 initial;
     [SerializeField] Vector3 current;
     [SerializeField] float targetDistance;//襖が開く距離
     [SerializeField] bool isOpen;//trueなら襖が開いた状態、falseなら閉じた状態
     [SerializeField] Animator anim;
-    [SerializeField] ShaffleRoom shaffleRoom;
     [SerializeField] bool isOperating;//襖の開閉操作中か
 
     private void Start()
     {
-        initial = gameObject.transform.localPosition;
         anim = gameObject.GetComponent<Animator>();
         targetDistance = 1.5f;
     }

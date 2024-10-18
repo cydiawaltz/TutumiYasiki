@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(Camera))]
 public class LowResolutionCamera : MonoBehaviour
 {
-    [SerializeField] int defaultWidth;
+    /*[SerializeField] int defaultWidth;
     [SerializeField] int defaultHeight;
     /// <summary>
     /// デフォルト解像度
@@ -24,7 +24,7 @@ public class LowResolutionCamera : MonoBehaviour
 
     private RenderTexture _renderTexture;
     private Camera _camera;
-    private Camera _subCamera;
+    private Camera _subCamera;*/
     [SerializeField] GameObject setting;//設定ファイルが格納されているGameObject(DontDestroy)
 
     private void Start()
@@ -36,31 +36,35 @@ public class LowResolutionCamera : MonoBehaviour
             {
                 case "Low":
                     Application.targetFrameRate = 10;
-                    _resolutionWeight = 0.2f;
+                    //_resolutionWeight = 0.2f;
+                    Screen.SetResolution(320, 180,true);
                     break;
                 case "Normal":
                     Application.targetFrameRate = 30;
-                    _resolutionWeight = 0.4f;
+                    Screen.SetResolution(640, 360, true);
+                    //_resolutionWeight = 0.4f;
                     break;
                 case "High":
-                    _resolutionWeight = 1.0f;
+                    //_resolutionWeight = 1.0f;
+                    Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
                     break;
             }
         }
         catch(UnityException e)
         {
             Debug.Log(e.Message);
+            Screen.SetResolution(320, 180, true);
             Application.targetFrameRate = 10;
         }
         
-        RESOLUTION = new Vector2(defaultWidth, defaultHeight);
-        SetResolution(_resolutionWeight);
+        /*RESOLUTION = new Vector2(defaultWidth, defaultHeight);
+        SetResolution(_resolutionWeight);*/
     }
 
     /// <summary>
     /// 解像度を設定
     /// </summary>
-    public void SetResolution(float resolutionWeight)
+    /*public void SetResolution(float resolutionWeight)
     {
         _resolutionWeight = resolutionWeight;
         _currentResolutionWeight = resolutionWeight;
@@ -100,5 +104,5 @@ public class LowResolutionCamera : MonoBehaviour
         // _resolutionWeightの値が更新された時だけ解像度変更処理を呼ぶ
         // Inspector上で_resolutionWeightを操作するとき用の処理
         SetResolution(_resolutionWeight);
-    }
+    }*/
 }

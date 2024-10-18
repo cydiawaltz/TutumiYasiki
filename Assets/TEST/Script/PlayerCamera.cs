@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
+    public bool isRouka = false;
+
     public float sensX;
     public float sensY;
     

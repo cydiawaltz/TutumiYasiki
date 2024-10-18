@@ -8,6 +8,9 @@ TagManager:
   - Fusuma
   - SubCamera
   - Tatami
+  - Item
+  - Rouka
+  - Setting
   layers:
   - Default
   - TransparentFX
