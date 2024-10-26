@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using System;
 
 public class Timer : MonoBehaviour
@@ -11,10 +13,17 @@ public class Timer : MonoBehaviour
     [SerializeField] string minutes;
     [SerializeField] string seconds;
     [SerializeField] string milliSeconds;
+    [SerializeField] float defaultTimer;
+    [SerializeField] Image image;
+    [SerializeField] TextMeshProUGUI text;
+    [SerializeField] GameObject over;
+    [SerializeField] GameObject uI;
     // Start is called before the first frame update
     void Start()
     {
-        
+        defaultTimer = timer;
+        over.SetActive(false);
+        uI.SetActive(true);
     }
 
     // Update is called once per frame
@@ -36,7 +45,19 @@ public class Timer : MonoBehaviour
             milliSeconds = "0" + milliSeconds;
         }
         timerMessage = minutes + ":" + seconds + "." + milliSeconds;
-        if(timer<0)
+        timerMessage = timerMessage.Replace("0", "〇")
+                           .Replace("1", "一")
+                           .Replace("2", "二")
+                           .Replace("3", "三")
+                           .Replace("4", "四")
+                           .Replace("5", "五")
+                           .Replace("6", "六")
+                           .Replace("7", "七")
+                           .Replace("8", "八")
+                           .Replace("9", "九")
+                           .Replace("-","〇");
+        text.text = timerMessage;
+        if (timer<0)
         {
             isGameOver = true;
         }
@@ -44,5 +65,11 @@ public class Timer : MonoBehaviour
         {
             timer -= Time.deltaTime;
         }
+        if(isGameOver)
+        {
+            over.SetActive(true);
+            uI.SetActive(false);
+        }
+        image.fillAmount = timer / defaultTimer;
     }
 }

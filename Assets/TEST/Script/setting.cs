@@ -7,6 +7,7 @@ public class SettingStore : MonoBehaviour//Tag名:「Setting」　これは、�
 	public string graphicsSetting;//Low=>PS1程度のグラフィックス、Normal=>PS2程度、High=>普通
 	public int residueItem;//アイテムの残りの数
 	public bool isClear = false;
+	public int defaultLife;//Lifeの元の値
 	// Use this for initialization
 	void Start()
 	{

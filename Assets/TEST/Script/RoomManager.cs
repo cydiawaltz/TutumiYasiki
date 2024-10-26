@@ -6,7 +6,7 @@ public class RoomManager : MonoBehaviour
     [SerializeField] GameObject[] currentRooms;//番号はdefaultNumの座標に対応
     [SerializeField] GameObject player;
     [SerializeField] GameObject cameraObj;
-    [SerializeField] Vector3[] center;//部屋の中心（畳）の座標を取得する
+    public Vector3[] center;//部屋の中心（畳）の座標を取得する
     [SerializeField] float[] distance;//部屋の中心(=畳の中心)からプレイヤーへの距離
     [SerializeField] bool isShuffle = false;
     [SerializeField] int currentRoomIndex;//今いる部屋
