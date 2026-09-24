@@ -31,10 +31,21 @@ public class Item : MonoBehaviour
         {
             Debug.LogWarning("You can (not) redo.");
         }
+        //Transform player = transform.Find("Player");
+        //Transform camera = transform.Find("CameraHolder");
+        //if (!(player == null))
+        //{
+            //camera.parent = this.transform.parent;
+            //player.parent = this.transform.parent;
+        //}
         this.gameObject.SetActive(false);
+        //this.GetComponent<BoxCollider>().enabled = false;
+        //this.GetComponent<MeshRenderer>().enabled = false;
         if(!(setting==null))
         {
             setting.residueItem--;
+            setting.OnChangeValue();
         }
+        //this.GetComponent<Item>().enabled = false;
     }
 }

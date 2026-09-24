@@ -11,7 +11,8 @@ public class Life : MonoBehaviour
     [SerializeField] GameObject player;
     bool isStartedPurple = false;
     [SerializeField] float waitSeconds;
-    [SerializeField] Enemy enemy;
+    [SerializeField] EnemyController enemy;
+    [SerializeField] EnemyController enemy2;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,7 +57,9 @@ public class Life : MonoBehaviour
         {
             player.GetComponent<CharacterController>().enabled = false;
             enemy.isGameOverOrClear = true;
+            enemy2.isGameOverOrClear = true;
             timer.isGameOver = true;
+
         }
     }
     IEnumerator OnLifeFew()

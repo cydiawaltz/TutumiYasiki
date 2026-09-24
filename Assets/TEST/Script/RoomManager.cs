@@ -8,10 +8,11 @@ public class RoomManager : MonoBehaviour
     [SerializeField] GameObject cameraObj;
     public Vector3[] center;//部屋の中心（畳）の座標を取得する
     [SerializeField] float[] distance;//部屋の中心(=畳の中心)からプレイヤーへの距離
-    [SerializeField] bool isShuffle = false;
+    public bool isShuffle = false;
     [SerializeField] int currentRoomIndex;//今いる部屋
     [SerializeField] int nearRoomIndex;//現在最も近い部屋
     [SerializeField] float targetDistance;
+    [SerializeField] AudioSource source;
 
     void Start()
     {
@@ -79,6 +80,7 @@ public class RoomManager : MonoBehaviour
     // 部屋をシャッフルするメソッド
     void Shuffle()
     {
+        source.Play();
         for (int i = 0; i < currentRooms.Length; i++)
         {
             GameObject temp = currentRooms[i];

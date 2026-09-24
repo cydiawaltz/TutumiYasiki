@@ -5,7 +5,7 @@ public class ItemUI : MonoBehaviour
 {
     [SerializeField] Image[] items;
     [SerializeField] SettingStore setting;
-    [SerializeField] Enemy enemy;
+    [SerializeField] EnemyController enemy;
     [SerializeField] GameObject uI;
     [SerializeField] GameObject clear;
     [SerializeField] CharacterController characterController;
@@ -13,6 +13,7 @@ public class ItemUI : MonoBehaviour
     [SerializeField] GameObject toki;//時だけ別オブジェクトなので
     [SerializeField] Animator animator;//命の下がるアニメ
     [SerializeField] GameObject ending;//エンディングの動画
+    [SerializeField] over over;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,7 +38,7 @@ public class ItemUI : MonoBehaviour
                 items[i].color = new Color(0, 0, 0);
             }
         }
-        if(setting.residueItem == 0)
+        if(setting.residueItem == 0 || Input.GetKey(KeyCode.O))
         {
             foreach(Image image in images)
             {
@@ -50,6 +51,7 @@ public class ItemUI : MonoBehaviour
             toki.SetActive(false);
             ending.SetActive(true);
             uI.SetActive(false);
+            over.isClear = true;
         }
     }
 }

@@ -18,12 +18,22 @@ public class Timer : MonoBehaviour
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] GameObject over;
     [SerializeField] GameObject uI;
+    [SerializeField] AudioSource source;
+    [SerializeField] SettingStore setting;
     // Start is called before the first frame update
     void Start()
     {
         defaultTimer = timer;
         over.SetActive(false);
         uI.SetActive(true);
+        try
+        {
+            setting = GameObject.FindWithTag("Setting").GetComponent<SettingStore>();
+        }
+        catch (UnityException e)
+        {
+            Debug.LogError("You can (not) advance." + e.Message);
+        }
     }
 
     // Update is called once per frame
@@ -69,7 +79,12 @@ public class Timer : MonoBehaviour
         {
             over.SetActive(true);
             uI.SetActive(false);
+            source.Play();
         }
         image.fillAmount = timer / defaultTimer;
+    }
+    private void OnDestroy()
+    {
+        setting.residueTime = timer;
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// カメラが映すものを低解像度に設定できるようにするコンポーネント
@@ -31,24 +32,32 @@ public class LowResolutionCamera : MonoBehaviour
     {
         try
         {
-            setting = GameObject.FindWithTag("Setting");
-            switch(setting.GetComponent<SettingStore>().graphicsSetting)
+            if (SceneManager.GetActiveScene().name == "stage")
             {
-                case "Low":
-                    Application.targetFrameRate = 10;
-                    //_resolutionWeight = 0.2f;
-                    Screen.SetResolution(320, 180,true);
-                    break;
-                case "Normal":
-                    Application.targetFrameRate = 30;
-                    Screen.SetResolution(640, 360, true);
-                    //_resolutionWeight = 0.4f;
-                    break;
-                case "High":
-                    //_resolutionWeight = 1.0f;
-                    Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
-                    break;
+                setting = GameObject.FindWithTag("Setting");
+                switch (setting.GetComponent<SettingStore>().graphicsSetting)
+                {
+                    case "Low":
+                        Application.targetFrameRate = 10;
+                        //_resolutionWeight = 0.2f;
+                        Screen.SetResolution(320, 180, true);
+                        break;
+                    case "Normal":
+                        Application.targetFrameRate = 30;
+                        Screen.SetResolution(640, 360, true);
+                        //_resolutionWeight = 0.4f;
+                        break;
+                    case "High":
+                        //_resolutionWeight = 1.0f;
+                        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+                        break;
+                }
             }
+            else {
+                Screen.SetResolution(1200, 800, false);
+                Application.targetFrameRate = 60;
+            }
+            
         }
         catch(UnityException e)
         {
@@ -61,6 +70,11 @@ public class LowResolutionCamera : MonoBehaviour
         SetResolution(_resolutionWeight);*/
     }
 
+    void OnDestroy()
+    {
+        Screen.SetResolution(1200, 800, false);
+        Application.targetFrameRate = 60;
+    }
     /// <summary>
     /// 解像度を設定
     /// </summary>
